@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Prediksi Kepribadian MBTI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS khusus untuk halaman hasil */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eaf3f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .result-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 900px;
+            width: 100%;
+            margin: 40px auto;
+            text-align: center;
+        }
+        .result-container h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px; /* Diperbarui */
+        }
+        .result-container p.user-greeting { /* BARU */
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        .result-container p.predicted-type {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background-color: #e8f5fd;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .explanation-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .explanation-item {
+            background-color: #f8fcfd;
+            border: 1px solid #dbe9f1;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .explanation-item:hover {
+            transform: translateY(-5px);
+        }
+        .explanation-item h2 {
+            color: #34495e;
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation-item h2 span.char-highlight {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2980b9;
+            background-color: #cce7f8;
+            padding: 5px 12px;
+            border-radius: 8px;
+        }
+        .explanation-item p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        .back-button-container {
+            margin-top: 40px;
+        }
+        .back-button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .back-button:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .result-container {
+                padding: 25px;
+                margin: 20px auto;
+            }
+            .result-container h1 {
+                font-size: 2em;
+            }
+            .result-container p.predicted-type {
+                font-size: 1.5em;
+            }
+            .explanation-item h2 {
+                font-size: 1.5em;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .explanation-item h2 span.char-highlight {
+                margin-bottom: 5px;
+            }
+            .explanation-item p {
+                font-size: 1em;
+            }
+            .back-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h1>Halo {{ user_name }}!</h1> {# Menampilkan nama pengguna #}
+        <h1>Hasil Prediksi Kepribadian MBTI Anda</h1>
+        <p class="predicted-type">{{ predicted_personality }}</p>
+
+        <div class="explanation-section">
+            {% for char in predicted_personality %}
+                <div class="explanation-item">
+                    <h2>
+                        <span class="char-highlight">{{ char }}</span>
+                        {% if char == 'I' %} (Introvert)
+                        {% elif char == 'E' %} (Ekstrovert)
+                        {% elif char == 'S' %} (Sensing)
+                        {% elif char == 'N' %} (Intuition)
+                        {% elif char == 'T' %} (Thinking)
+                        {% elif char == 'F' %} (Feeling)
+                        {% elif char == 'J' %} (Judging)
+                        {% elif char == 'P' %} (Perceiving)
+                        {% endif %}
+                    </h2>
+                    <p>{{ explanations[char].description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="back-button-container">
+            <a href="/" class="back-button">Kembali ke Halaman Utama</a>
+        </div>
+    </div>
+</body>
+</html>

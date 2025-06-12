@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediktor Kepribadian MBTI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prediksi Kepribadian MBTI</h1>
+        {# Tampilkan pesan error jika ada, ini berguna jika model/pkl gagal dimuat #}
+        {% if error_message %}
+        <div class="error-message">
+            <p>{{ error_message }}</p>
+        </div>
+        {% endif %}
+
+        <form id="predictionForm" action="/predict" method="POST">
+            {# Penambahan input untuk Nama #}
+            <div class="input-group">
+                <label for="name">Nama Anda:</label>
+                <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
+            </div>
+
+            <div class="input-group">
+                <label for="age">Usia Anda:</label>
+                <!-- Input tipe number, tapi styling akan menyembunyikan panah naik/turun -->
+                <input type="number" id="age" name="age" min="10" max="100" placeholder="Masukkan usia Anda" class="no-spinner" required>
+            </div>
+
+            <div class="input-group">
+                <label for="gender">Jenis Kelamin:</label>
+                <select id="gender" name="gender" required>
+                    {% for option in gender_options %}
+                        <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="education">Tingkat Pendidikan:</label>
+                <select id="education" name="education" required>
+                    {% for option in education_options %}
+                        <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="interest">Minat Utama:</label>
+                <select id="interest" name="interest" required>
+                    {% for option in interest_options %}
+                        <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {# BARU: Kotak teks untuk minat "Others" #}
+            <div id="otherInterestGroup" class="input-group" style="display: none;">
+                <label for="interest_other">Minat Lainnya (opsional):</label>
+                <input type="text" id="interest_other" name="interest_other" placeholder="Misal: Desain Grafis">
+            </div>
+
+            <h3>Silakan isi pertanyaan berikut (1 = Sangat Tidak Setuju, 5 = Sangat Setuju):</h3>
+
+            {% for category, qs in questions.items() %}
+                <div class="question-category">
+                    <h4>{{ category.replace(' Score', '') }}</h4> {# Menghilangkan ' Score' dari judul kategori #}
+                    {% for i in range(qs | length) %}
+                        <div class="input-group question-item">
+                            <label>{{ qs[i] }}</label>
+                            <div class="radio-group">
+                                {% for score in [1, 2, 3, 4, 5] %}
+                                    <input type="radio" id="{{ category.replace(' ', '_') }}_{{ i }}_score{{ score }}"
+                                           name="{{ category.replace(' ', '_') }}_{{ i }}"
+                                           value="{{ score }}" {% if score == 3 %}checked{% endif %} required>
+                                    <label for="{{ category.replace(' ', '_') }}_{{ i }}_score{{ score }}">{{ score }}</label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit">Prediksi Kepribadian</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const interestSelect = document.getElementById('interest');
+            const otherInterestGroup = document.getElementById('otherInterestGroup');
+            const otherInterestInput = document.getElementById('interest_other');
+
+            function toggleOtherInterestInput() {
+                if (interestSelect.value === 'Others') {
+                    otherInterestGroup.style.display = 'block';
+                    // otherInterestInput.setAttribute('required', 'required'); // Opsional: Jadikan wajib diisi
+                } else {
+                    otherInterestGroup.style.display = 'none';
+                    // otherInterestInput.removeAttribute('required');
+                    otherInterestInput.value = ''; // Kosongkan nilai saat disembunyikan
+                }
+            }
+
+            // Panggil saat halaman dimuat (untuk kasus refresh atau back)
+            toggleOtherInterestInput();
+
+            // Panggil setiap kali pilihan dropdown berubah
+            interestSelect.addEventListener('change', toggleOtherInterestInput);
+        });
+    </script>
+</body>
+</html>

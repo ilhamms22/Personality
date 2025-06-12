@@ -1,0 +1,217 @@
+body {
+    font-family: 'Inter', sans-serif; /* Menggunakan Inter sesuai instruksi */
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 35px;
+    border-radius: 12px; /* Lebih rounded */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Shadow yang lebih dalam */
+    max-width: 800px;
+    width: 100%;
+    margin: 20px 0; /* Margin atas/bawah */
+}
+
+h1, h3, h4 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 700; /* Lebih tebal */
+}
+
+/* Penyesuaian h1 di result.html */
+.result-container h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 10px; /* Mengurangi margin bawah */
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600; /* Agak tebal */
+    color: #34495e;
+    font-size: 1.05em;
+}
+
+/* Menambahkan input[type="text"] ke selector */
+.input-group input[type="number"],
+.input-group input[type="text"], /* Styling untuk input teks */
+.input-group select {
+    width: calc(100% - 22px);
+    padding: 12px;
+    border: 1px solid #c9d0d6;
+    border-radius: 8px; /* Lebih rounded */
+    font-size: 16px;
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Menambahkan input[type="text"] ke selector focus */
+.input-group input[type="number"]:focus,
+.input-group input[type="text"]:focus, /* Styling fokus untuk input teks */
+.input-group select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+/* Menghilangkan panah pada input number */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.question-category {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ecf0f1;
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05); /* Sedikit inner shadow */
+}
+
+.question-item {
+    display: flex;
+    flex-direction: column; /* Ubah menjadi kolom */
+    margin-bottom: 18px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.question-item:hover {
+    transform: translateY(-3px);
+}
+
+.question-item label {
+    font-weight: normal; /* Label pertanyaan tidak terlalu tebal */
+    color: #4a637d;
+    margin-bottom: 10px; /* Jarak antara pertanyaan dan radio button */
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center; /* Pusatkan radio buttons */
+    gap: 15px; /* Jarak antar tombol */
+    flex-wrap: wrap; /* Izinkan wrap jika layar kecil */
+}
+
+.radio-group input[type="radio"] {
+    display: none; /* Sembunyikan radio button asli */
+}
+
+.radio-group label {
+    background-color: #e0e6eb;
+    color: #5d748f;
+    padding: 10px 15px;
+    border-radius: 25px; /* Bentuk pil */
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent; /* Border default transparan */
+    min-width: 40px; /* Lebar minimum untuk setiap tombol */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.radio-group label:hover {
+    background-color: #d1d9e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.radio-group input[type="radio"]:checked + label {
+    background-color: #3498db; /* Warna biru saat dipilih */
+    color: white;
+    border-color: #2980b9;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    transform: translateY(-1px);
+}
+
+
+button {
+    background-color: #2ecc71; /* Warna hijau menarik */
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px; /* Lebih rounded */
+    cursor: pointer;
+    font-size: 1.2em;
+    width: 100%;
+    margin-top: 30px;
+    font-weight: 700;
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    .input-group label {
+        font-size: 1em;
+    }
+    /* Menambahkan input[type="text"] ke selector responsif */
+    .input-group input[type="number"],
+    .input-group input[type="text"], /* Styling responsif untuk input teks */
+    .input-group select {
+        padding: 10px;
+        font-size: 15px;
+    }
+    .question-item label {
+        font-size: 0.95em;
+    }
+    .radio-group {
+        flex-direction: row; /* Tetap baris, tapi bisa wrap */
+        justify-content: space-around;
+        gap: 8px;
+    }
+    .radio-group label {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+    .result-box {
+        font-size: 1em;
+        padding: 18px;
+    }
+}
+
+/* Tambahan CSS untuk pesan error di index.html */
+.error-message {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
