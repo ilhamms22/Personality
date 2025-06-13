@@ -1,7 +1,7 @@
 # Contoh: Gunakan base image Python yang sesuai
 # Sesuaikan 'python:3.9-slim-buster' dengan versi Python dan OS dasar yang Anda gunakan
 # Misalnya: FROM python:3.10-slim-bullseye atau FROM python:3.8-slim-buster
-FROM python:3.10-slim-buster
+FROM python:3.11-slim-bullseye
 
 # Atur direktori kerja di dalam container
 WORKDIR /app
