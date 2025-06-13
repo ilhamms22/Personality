@@ -1,9 +1,16 @@
-# --- Tahap 1: Build Dependensi ---
-FROM python:3.11-slim-bullseye AS builder
+# Contoh: Gunakan base image Python yang sesuai
+# Sesuaikan 'python:3.9-slim-buster' dengan versi Python dan OS dasar yang Anda gunakan
+# Misalnya: FROM python:3.10-slim-bullseye atau FROM python:3.8-slim-buster
+FROM python:3.11-slim-bullseye
 
+# Atur direktori kerja di dalam container
 WORKDIR /app
 
-# Instal dependensi sistem yang dibutuhkan untuk build (seperti build-essential)
+# Atur variabel lingkungan PATH untuk venv
+ENV NIXPACKS_PATH=/opt/venv/bin:$NIXPACKS_PATH
+
+# Langkah baru: Instal build dependencies dan system libraries
+# Ini harus dilakukan SEBELUM pip install
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
@@ -17,29 +24,14 @@ RUN apt-get update && \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Salin requirements.txt dan instal dependensi Python ke venv
-COPY requirements.txt .
-RUN python -m venv /opt/venv && \
-    . /opt/venv/bin/activate && \
-    pip install --no-cache-dir -r requirements.txt
-
-# --- Tahap 2: Runtime (Image Final) ---
-FROM python:3.11-slim-bullseye
-
-WORKDIR /app
-
-# Salin venv yang sudah jadi dari tahap builder
-COPY --from=builder /opt/venv /opt/venv
-
-# Salin kode aplikasi Anda
+# Salin semua file dari konteks build ke dalam direktori /app di container
 COPY . /app/.
 
-# Atur PATH untuk venv
-ENV NIXPACKS_PATH=/opt/venv/bin:$NIXPACKS_PATH
-ENV PATH="/opt/venv/bin:$PATH" # Pastikan venv ada di PATH
+# Buat virtual environment, aktifkan, dan instal semua dependensi Python
+# Baris ini tetap sama seperti sebelumnya
+RUN --mount=type=cache,id=s/a726cafc-25c1-447f-b656-9d9f7f7ff7e9-/root/cache/pip,target=/root/.cache/pip python -m venv --copies /opt/venv && \
+    . /opt/venv/bin/activate && \
+    pip install -r requirements.txt
 
-# Hapus cache pip di tahap akhir jika masih ada
-RUN rm -rf /root/.cache/pip
-
-# Jika Anda punya CMD atau ENTRYPOINT, letakkan di sini
-# Contoh: CMD ["python", "app.py"]
+# Jika Anda memiliki CMD atau ENTRYPOINT di Dockerfile Anda, letakkan di sini
+# CMD ["python", "app.py"]
